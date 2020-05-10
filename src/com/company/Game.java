@@ -10,15 +10,38 @@ public class Game {
     }
 
     private void makeMoveX(int col, int row){
-        field.setField(col, row, "X");
-        field.showField();
-        System.out.println("                           ");
+        String[][] gameField = field.getField();
+            if (gameField[col][row].equals("*")){
+                field.setField(col, row, "X");
+                field.showField();
+                System.out.println("                           ");
+            } else {
+                System.out.println("It's busy");
+            }
     }
 
     private void makeMoveO(int col, int row){
-        field.setField(col, row, "O");
-        field.showField();
-        System.out.println("                           ");
+        String[][] gameField = field.getField();
+            if (gameField[col][row].equals("*")){
+                field.setField(col, row, "O");
+                field.showField();
+                System.out.println("                           ");
+            } else {
+                System.out.println("It's busy");
+            }
+
+
+    }
+
+    private boolean draw(){
+        for(String[] fieldTab : field.getField()){
+            for(String item : fieldTab){
+                if (item.equals("*")){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void play(){
@@ -44,6 +67,10 @@ public class Game {
                 System.out.println("Player O wins!");
                 break;
             }
+            if(draw()){
+                System.out.println("Draw! try again ;)");
+                break;
+            }
             System.out.println("X turn: ");
             String moveX = scanner.nextLine();
             String[] splitX = moveX.split(" ", 2);
@@ -59,9 +86,12 @@ public class Game {
             } catch (Exception e){
                 continue;
             }
-
             if (winX()){
                 System.out.println("Player X wins!");
+                break;
+            }
+            if(draw()){
+                System.out.println("Draw! try again ;)");
                 break;
             }
         }
