@@ -9,28 +9,30 @@ public class Game {
     private Player player1;
     private Player player2;
 
-    public Game(){
+    public Game() {
         field = new Field(3);
         player1 = new Player("O");
         player2 = new Player("X");
     }
 
-    private void makeMove(int col, int row, Player player){
+    private boolean makeMove(int col, int row, Player player) {
         String sign = player.getSign();
         String[][] gameField = field.getField();
-            if (gameField[col][row].equals("*")){
-                field.setField(col, row, sign);
-                field.showField();
-                System.out.println("                           ");
-            } else {
-                System.out.println("It's busy");
-            }
+        if (gameField[col][row].equals("*")) {
+            field.setField(col, row, sign);
+            field.showField();
+            System.out.println("                           ");
+            return true;
+        } else {
+            System.out.println("cannot put " + player.getSign() + " here!");
+            return false;
+        }
     }
 
-    private boolean draw(){
-        for(String[] fieldTab : field.getField()){
-            for(String item : fieldTab){
-                if (item.equals("*")){
+    private boolean draw() {
+        for (String[] fieldTab : field.getField()) {
+            for (String item : fieldTab) {
+                if (item.equals("*")) {
                     return false;
                 }
             }
@@ -38,19 +40,20 @@ public class Game {
         return true;
     }
 
-    private Player switchPlayer(int count){
-        if (count%2==0){
+    private Player switchPlayer(int count) {
+        if (count % 2 == 0) {
             return player1;
         } else {
             return player2;
         }
     }
 
-    public void play(){
+    public void play() {
         Scanner scanner = new Scanner(System.in);
         field.showField();
         int count = 1;
-        while (true){
+        boolean goodMove;
+        while (true) {
             Player player = switchPlayer(count);
             System.out.println(player.getSign() + " turn: ");
             String move = scanner.nextLine();
@@ -60,19 +63,22 @@ public class Game {
                 String pos2 = split[1];
                 int moveCol = Integer.parseInt(pos1) - 1;
                 int moveRaw = Integer.parseInt(pos2) - 1;
-                if((moveCol > field.getField().length - 1) || (moveRaw > field.getField().length - 1)){
+                if ((moveCol > field.getField().length - 1) || (moveRaw > field.getField().length - 1)) {
                     continue;
                 }
-                makeMove(moveCol, moveRaw, player);
-            } catch (Exception e){
+                goodMove = makeMove(moveCol, moveRaw, player);
+                if(!goodMove){
+                    continue;
+                }
+            } catch (Exception e) {
                 continue;
             }
-            if (win(player)){
+            if (win(player)) {
                 System.out.println("Player " + player.getSign() + " wins!");
                 System.out.println(count + " moves made");
                 break;
             }
-            if(draw()){
+            if (draw()) {
                 System.out.println("Draw! try again ;)");
                 System.out.println(count + " moves made");
                 break;
@@ -81,31 +87,31 @@ public class Game {
         }
     }
 
-    private boolean win(Player player){
+    private boolean win(Player player) {
         String[][] gameField = field.getField();
         String sign = player.getSign();
-        for (int i=0; i < gameField.length; i++){
+        for (int i = 0; i < gameField.length; i++) {
             int count = 0;
             int count1 = 0;
-            if(gameField[i][0].equals(sign) && gameField[i][1].equals(sign) && gameField[i][2].equals(sign)){
+            if (gameField[i][0].equals(sign) && gameField[i][1].equals(sign) && gameField[i][2].equals(sign)) {
                 return true;
             }
-            if (gameField[0][i].equals(sign) && gameField[1][i].equals(sign) && gameField[2][i].equals(sign)){
+            if (gameField[0][i].equals(sign) && gameField[1][i].equals(sign) && gameField[2][i].equals(sign)) {
                 return true;
             }
-            for(int j=0; j < gameField.length; j++){
-                if (gameField[j][j].equals(sign)){
+            for (int j = 0; j < gameField.length; j++) {
+                if (gameField[j][j].equals(sign)) {
                     count++;
-                    if(count == 3){
+                    if (count == 3) {
                         return true;
                     }
                 }
             }
-            for (int j=0; j < gameField.length; j++){
-                if (gameField[j][gameField.length - j - 1].equals(sign)){
+            for (int j = 0; j < gameField.length; j++) {
+                if (gameField[j][gameField.length - j - 1].equals(sign)) {
                     count1++;
                 }
-                if(count1 == 3){
+                if (count1 == 3) {
                     return true;
                 }
             }
