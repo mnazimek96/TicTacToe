@@ -1,4 +1,4 @@
-package com.company;
+package com.game;
 
 // How to play
 // Enter dimensions in format x y, i.e. 2 2

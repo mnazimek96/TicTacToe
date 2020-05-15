@@ -1,4 +1,4 @@
-package com.company;
+package com.game;
 
 
 import java.util.Arrays;
