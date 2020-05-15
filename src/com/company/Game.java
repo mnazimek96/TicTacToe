@@ -38,17 +38,20 @@ public class Game {
         return true;
     }
 
+    private Player switchPlayer(int count){
+        if (count%2==0){
+            return player1;
+        } else {
+            return player2;
+        }
+    }
+
     public void play(){
         Scanner scanner = new Scanner(System.in);
         field.showField();
-        Player player;
         int count = 1;
         while (true){
-            if(count%2==0){
-                player = player1;
-            } else {
-                player = player2;
-            }
+            Player player = switchPlayer(count);
             System.out.println(player.getSign() + " turn: ");
             String move = scanner.nextLine();
             String[] split = move.split(" ", 2);
@@ -60,16 +63,18 @@ public class Game {
                 if((moveCol > field.getField().length - 1) || (moveRaw > field.getField().length - 1)){
                     continue;
                 }
-                makeMove(moveCol, moveRaw,player);
+                makeMove(moveCol, moveRaw, player);
             } catch (Exception e){
                 continue;
             }
             if (win(player)){
                 System.out.println("Player " + player.getSign() + " wins!");
+                System.out.println(count + " moves made");
                 break;
             }
             if(draw()){
                 System.out.println("Draw! try again ;)");
+                System.out.println(count + " moves made");
                 break;
             }
             count++;
