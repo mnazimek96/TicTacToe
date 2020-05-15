@@ -15,16 +15,8 @@ public class Game {
         player2 = new Player("X");
     }
 
-    private Player switchPlayer(Player player){
-        if(player.getSign().equals("X")){
-            return this.player2;
-        } else {
-            return this.player1;
-        }
-    }
-
     private void makeMove(int col, int row, Player player){
-        String sign = switchPlayer(player).getSign();
+        String sign = player.getSign();
         String[][] gameField = field.getField();
             if (gameField[col][row].equals("*")){
                 field.setField(col, row, sign);
@@ -49,7 +41,7 @@ public class Game {
     public void play(){
         Scanner scanner = new Scanner(System.in);
         field.showField();
-        Player player = new Player("");
+        Player player;
         int count = 1;
         while (true){
             if(count%2==0){
